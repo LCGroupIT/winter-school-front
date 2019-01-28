@@ -1,0 +1,20 @@
+.form {
+  min-width: 150px;
+  width: 100%;
+}
+
+.form__input_full-width {
+  width: 100%;
+}
+
+.form__wrapper {
+  display: flex;
+  justify-content: space-between;
+
+  @media screen and (max-width: 400px) {
+    display: block;
+    & .form__field {
+      width: 100%;
+    }
+  }
+}
