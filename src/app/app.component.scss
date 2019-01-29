@@ -9,7 +9,21 @@
   @media screen and (max-width: 460px) {
     font-size: 20px;
   }
-  @media screen and  (min-width: 461px) and (max-width: 640px) {
+  @media screen and (min-width: 461px) and (max-width: 640px) {
     font-size: 25px;
+  }
+}
+
+.app__buttons-wrapper {
+  display: flex;
+  justify-content: space-around;
+
+  @media screen and (max-width: 400px) {
+    display: block;
+    text-align: center;
+    & .app__button {
+      width: 100%;
+      margin: 10px 0;
+    }
   }
 }
