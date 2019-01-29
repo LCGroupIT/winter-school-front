@@ -1,0 +1,11 @@
+<div>
+  <image-upload
+    buttonCaption="Выбрать фотогафию"
+    dropBoxMessage="Или закиньте сюда"
+    clearButtonCaption="Отчистить"
+    [max]="1"
+    (uploadStateChanged)="onUploadStateChanged($event)"
+    (uploadFinished)="onUploadFinished($event)"
+  >
+  </image-upload>
+</div>
