@@ -6,6 +6,7 @@ import { ImageUploadModule } from "angular2-image-upload";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { FormComponent } from "./form/form.component";
+import { CameraComponent } from "./camera/camera.component";
 import { FileLoadButtonComponent } from "./file-load-button/file-load-button.component";
 import { FileLoadDialogComponent } from "./file-load-dialog/file-load-dialog.component";
 
@@ -26,6 +27,7 @@ import { MatButtonModule } from "@angular/material/button";
   declarations: [
     AppComponent,
     FormComponent,
+    CameraComponent,
     FileLoadButtonComponent,
     FileLoadDialogComponent
   ],
