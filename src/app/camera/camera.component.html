@@ -5,10 +5,10 @@
       <canvas id="test-canvas" #canvas [hidden]="!showCam"></canvas>
       <canvas id="photo-canvas" #photoCanvas [hidden]="true"></canvas>
       <div id="buttonBar">
-        <img id="ico_flip" src="../assets/logo/flip-ico.png" [hidden]="!showCam"/>
-        <!--<button disabled id="flip-btn" [hidden]="!showCam">
-          Flip Camera
-        </button>-->
+        <img id="ico_flip" src="../assets/logo/flip-ico.png" (click)="flip()" [hidden]="!showCam"/>
+        <!--<button disabled id="flip-btn" [hidden]="!showCam">-->
+          <!--Flip Camera-->
+        <!--</button>-->
         <img id="ico_photo" src="../assets/logo/photo-ico2.png" (click)="capture()" [hidden]="!showCam">
         <img id="ico_close" src="../assets/logo/close-ico2.png" (click)="showCam=false" [hidden]="!showCam"/>
         <!-- <button id ="camClose-btn" (click)="showCam=false" [hidden]="!showCam">

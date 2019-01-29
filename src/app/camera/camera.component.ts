@@ -25,6 +25,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
 
   pictureWidth = 640;
   pictureHeight = 460;
+  shouldFaceUser = false;
 
   public constructor() {
     this.captures = [];
@@ -72,6 +73,9 @@ export class CameraComponent implements OnInit, AfterViewInit {
             },
             {
               height: { min: this.pictureHeight }
+            },
+            {
+              facingMode: this.shouldFaceUser
             }
           ]
         }
@@ -222,16 +226,30 @@ export class CameraComponent implements OnInit, AfterViewInit {
           ctx.translate($this.width,0);
           ctx.scale(-1,1);
           ctx.drawImage($this, 0, 0);
-          ctx.setLineDash([0, 0]);
-          ctx.lineWidth =5;
-          ctx.strokeStyle = "yellow";
-          ctx.strokeRect(ctx.canvas.width/4, 20, ctx.canvas.width/2,ctx.canvas.height-90);
-          ctx.lineWidth =2;
-          ctx.setLineDash([10, 5]);
-          ctx.strokeRect(ctx.canvas.width/4, ctx.canvas.height/2-20, ctx.canvas.width/2,0);
-          ctx.setLineDash([0, 0]);
-          ctx.strokeStyle = "red";
-          ctx.strokeRect((ctx.canvas.width/4)*2+50, ctx.canvas.height/2+10, 80,100);
+          if (ctx.canvas.offsetWidth>600) {
+            ctx.setLineDash([0, 0]);
+            ctx.lineWidth =5;
+            ctx.strokeStyle = "yellow";
+            ctx.strokeRect(ctx.canvas.offsetWidth/4, 20, ctx.canvas.offsetWidth/2,ctx.canvas.offsetHeight-90);
+            ctx.lineWidth =2;
+            ctx.setLineDash([10, 5]);
+            ctx.strokeRect(ctx.canvas.offsetWidth/4, ctx.canvas.offsetHeight/2-20, ctx.canvas.offsetWidth/2,0);
+            ctx.setLineDash([0, 0]);
+            ctx.strokeStyle = "red";
+            ctx.strokeRect((ctx.canvas.offsetWidth/4)*2+50, ctx.canvas.offsetHeight/2+10, 80,100);
+          }
+          else {
+            ctx.setLineDash([0, 0]);
+            ctx.lineWidth =5;
+            ctx.strokeStyle = "yellow";
+            ctx.strokeRect(20, 20, ctx.canvas.width-20,ctx.canvas.height-90);
+            ctx.lineWidth =2;
+            ctx.setLineDash([10, 5]);
+            ctx.strokeRect(20, ctx.canvas.height/2-20, ctx.canvas.width-20,0);
+            ctx.setLineDash([0, 0]);
+            ctx.strokeStyle = "red";
+            ctx.strokeRect((ctx.canvas.width/2), ctx.canvas.height/2+10, 80,100);
+          }
           ctx.setTransform(1,0,0,1,0,0);
           setTimeout(loop, 1000 / 30); // drawing at 30fps
 
@@ -252,4 +270,11 @@ export class CameraComponent implements OnInit, AfterViewInit {
     this.captures.push(this.photoCanvas.nativeElement.toDataURL('image/png'));
   }
 
+  public flip() {
+    const supports = navigator.mediaDevices.getSupportedConstraints();
+    console.log(supports);
+    if ( supports['facingMode'] === true ) {
+      this.shouldFaceUser = !this.shouldFaceUser;
+    }
+  }
 }
