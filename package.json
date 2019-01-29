@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "npx ng build --base-href winter-school-front && npx gh-pages -d dist/winter-school-front"
+    "deploy": "npx ng build --prod --base-href winter-school-front && npx gh-pages -d dist/winter-school-front"
   },
   "private": true,
   "dependencies": {
