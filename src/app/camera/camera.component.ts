@@ -39,7 +39,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
   };
 
 
-  public constructor() {
+  public constructor(private passportFileService: PassportFileService) {
     this.captures = [];
   }
 
@@ -360,7 +360,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
 
     this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement, this.currentRectCoords.x, this.currentRectCoords.y, this.currentRectCoords.width, this.currentRectCoords.height, 0, 0, this.currentRectCoords.width, this.currentRectCoords.height);
     this.photoCanvas.nativeElement.toBlob(function(blob) {
-      PassportFileService.setPassportFile(blob);
+      this.passportFileService.setPassportFile(blob);
     }, 'image/png');
     this.captures.push(this.photoCanvas.nativeElement.toDataURL('image/png'));
   }
