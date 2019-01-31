@@ -42,7 +42,6 @@ export class FileLoadDialogComponent implements OnInit {
 
 
   sendPhoto() {
-    console.log("sending photo");
     this.ngxService.start();
     this.passportFileService.setPassportFile(this.photo);
     this.closeDialog();

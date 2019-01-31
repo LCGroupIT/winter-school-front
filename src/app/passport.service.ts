@@ -50,5 +50,6 @@ export class PassportService {
     }
   }
 
-  prepareDate = (date: string): Date => moment(date, "DDMMYYYY").toDate();
+  prepareDate = (date: string): Date =>
+    typeof date === "string" ? moment(date, "DDMMYYYY").toDate() : date;
 }
