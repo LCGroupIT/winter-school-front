@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { MatDialogRef } from "@angular/material";
 import { PassportFileService } from "../passport-file.service";
+import { NgxUiLoaderService } from 'ngx-ui-loader'; 
 
 @Component({
   selector: "app-file-load-dialog",
@@ -8,22 +9,42 @@ import { PassportFileService } from "../passport-file.service";
   styleUrls: ["./file-load-dialog.component.scss"]
 })
 export class FileLoadDialogComponent implements OnInit {
+  photo: File;
+
   ngOnInit() {}
 
-  constructor(public dialogRef: MatDialogRef<FileLoadDialogComponent>) {}
+  sendButtonStatus: boolean = true;
 
-  onNoClick(): void {
+  constructor(
+    public dialogRef: MatDialogRef<FileLoadDialogComponent>,
+    private passportFileService: PassportFileService,
+    private ngxService: NgxUiLoaderService
+  ) {}
+
+  closeDialog(): void {
     this.dialogRef.close();
   }
 
   ngAfterViewInit() {}
+
+  onRemoved() {
+    this.sendButtonStatus = true;
+  }
 
   onUploadStateChanged(e) {
     console.log("onUploadStateChanged", e);
   }
 
   onUploadFinished(e) {
-    console.log("onUploadFinished", e);
-    PassportFileService.setPassportFile(e.file);
+    this.sendButtonStatus = false;
+    this.photo = e.file;
+  }
+
+
+  sendPhoto() {
+    console.log("sending photo");
+    this.ngxService.start();
+    this.passportFileService.setPassportFile(this.photo);
+    this.closeDialog();
   }
 }

@@ -4,8 +4,17 @@
     dropBoxMessage="Или закиньте сюда"
     clearButtonCaption="Отчистить"
     [max]="1"
+    (removed)="onRemoved()"
     (uploadStateChanged)="onUploadStateChanged($event)"
     (uploadFinished)="onUploadFinished($event)"
   >
   </image-upload>
+  <div class="file-load-dialog__button-wrapper">
+    <button mat-raised-button color="primary" (click)="closeDialog()">
+      Отменить
+    </button>
+    <button mat-raised-button color="accent" [disabled]="sendButtonStatus" (click)="sendPhoto()">
+      Распознать
+    </button>
+  </div>
 </div>
