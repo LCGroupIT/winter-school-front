@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
 
+
 @Component({
-  selector: "app-cam",
-  templateUrl: "./camera.component.html",
-  styleUrls: ["./camera.component.scss"]
+  selector: 'app-cam',
+  templateUrl: './camera.component.html',
+  styleUrls: ['./camera.component.scss']
 })
 export class CameraComponent implements OnInit, AfterViewInit {
   showCam = false;
@@ -23,9 +24,20 @@ export class CameraComponent implements OnInit, AfterViewInit {
   public captures: Array<any>;
 
 
+
   pictureWidth = 640;
   pictureHeight = 460;
-  shouldFaceUser = false;
+  stream = null;
+  cameraIdNumber = 0;
+  maxCameraIds = 1;
+  isMirror = false;
+  currentRectCoords = {
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0
+  };
+
 
   public constructor() {
     this.captures = [];
@@ -51,19 +63,22 @@ export class CameraComponent implements OnInit, AfterViewInit {
           });
 
           if (rearCameraIds.length) {
-            resolve(rearCameraIds[0]);
+            this.maxCameraIds = rearCameraIds.length;
+            console.log(rearCameraIds);
+            resolve(rearCameraIds[this.cameraIdNumber]);
           } else {
             resolve(null);
           }
         })
         .catch(function(err) {
-          console.log(err.name + ": " + err.message);
+          console.log(err.name + ': ' + err.message);
         });
     });
   }
 
 
   setupVideo(rearCameraId) {
+    console.log(rearCameraId);
     return new Promise(((resolve, reject) => {
       const videoSettings = {
         video: {
@@ -73,9 +88,6 @@ export class CameraComponent implements OnInit, AfterViewInit {
             },
             {
               height: { min: this.pictureHeight }
-            },
-            {
-              facingMode: this.shouldFaceUser
             }
           ]
         }
@@ -90,11 +102,12 @@ export class CameraComponent implements OnInit, AfterViewInit {
 
 
       navigator.mediaDevices.getUserMedia(<any>videoSettings)
-        .then((stream) => {
+        .then((_stream) => {
           //Setup the video stream
-          this.video.nativeElement.srcObject = stream;
+          this.stream = _stream;
+          this.video.nativeElement.srcObject = this.stream;
 
-          this.video.nativeElement.addEventListener("loadedmetadata", (e) => {
+          this.video.nativeElement.addEventListener('loadedmetadata', (e) => {
             //get video width and height as it might be different than we requested
             this.pictureWidth = e.target.videoWidth;
             this.pictureHeight = e.target.videoHeight;
@@ -124,7 +137,56 @@ export class CameraComponent implements OnInit, AfterViewInit {
   }
 
 
+
+
+
+  startCam(){
+    this.showCam = true;
+    this.searchForRearCamera().then(id => {
+      this.setupVideo(id).then(() => {
+        console.log('ok');
+      });
+    });
+  }
+
+
+
+
+
   public ngAfterViewInit() {
+
+    const ctx = this.canvas.nativeElement.getContext('2d');
+
+
+    this.video.nativeElement.addEventListener('loadedmetadata', (e) => {
+      this.canvas.nativeElement.width = e.target.videoWidth;
+      this.canvas.nativeElement.height = e.target.videoHeight;
+      /*
+            if (!pictureWidth && !pictureHeight) {
+                //firefox fails to deliver info about video size on time (issue #926753), we have to wait
+                var waitingForSize = setInterval(function () {
+                  if (video.videoWidth && video.videoHeight) {
+                    pictureWidth = video.videoWidth;
+                    pictureHeight = video.videoHeight;
+
+                    clearInterval(waitingForSize);
+                  }
+                }, 100);
+              }
+              */
+    });
+
+    const closeBtn = document.querySelector('#ico_close');
+    closeBtn.addEventListener('backKeyDown', function(e) {
+      alert('you hit the back key!');
+      this.showCam = false;
+      if( this.stream == null ) { return; }
+      this.stream.getTracks().forEach(t => {
+        t.stop();
+      });
+    }, false);
+
+    this.video.nativeElement.addEventListener('play', Draw.bind(this), 0);
     /*
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'user'} })
@@ -136,17 +198,96 @@ export class CameraComponent implements OnInit, AfterViewInit {
       });
     }
     */
+    
+    // this.searchForRearCamera().then(id => {
+    //   this.setupVideo(id).then(() => {
+    //     console.log('ok');
+    //   });
+    // });
+
+    function Draw(event) {
+      const $this = this.video.nativeElement;
+      const $mir = this.isMirror;
+      const rootThis = this;
+
+      (function loop() {
+        if (!$this.paused && !$this.ended) {
 
 
-    this.searchForRearCamera().then(id => {
-      this.setupVideo(id).then(() => {
-        console.log('ok');
-      });
-    });
+          // if($mir){
+          //   ctx.translate($this.width, 0);
+          //   ctx.scale(-1, 1);
+          // }
 
+          ctx.drawImage($this, 0, 0);
 
+          if (ctx.canvas.offsetWidth > ctx.canvas.offsetHeight) {
+            const pasportWidth = ctx.canvas.width / 2;
+            const pasportHeight = pasportWidth * 1.347;
+            const pasportMiddle = 20 + (pasportHeight / 2);
+            const pasportPhotoWidth = pasportWidth * 0.28;
+            const pasportPhotoHeight = pasportWidth * 0.357;
+            ctx.fillStyle = 'rgba(0,0,0,0.8)';
+            ctx.fillRect(0, 0, ctx.canvas.width, 18);
+            ctx.fillRect(0, 18, (ctx.canvas.width / 4) - 2, 2+pasportHeight+2);
+            ctx.fillRect(ctx.canvas.width / 4 + pasportWidth + 2,18, ctx.canvas.width, 2+pasportHeight+2);
+            ctx.fillRect(0, 20 + pasportHeight + 2, ctx.canvas.width, ctx.canvas.height);
+            ctx.setLineDash([0, 0]);
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = 'yellow';
+            ctx.strokeRect(ctx.canvas.width / 4, 20, pasportWidth, pasportHeight);
+            ctx.lineWidth =2;
+            ctx.setLineDash([10, 10]);
+            ctx.strokeRect(ctx.canvas.width / 4 , pasportMiddle, pasportWidth, 0);
+            ctx.setLineDash([0, 0]);
+            ctx.strokeStyle = 'red';
+            rootThis.currentRectCoords.x = ctx.canvas.width / 4;
+            rootThis.currentRectCoords.y = 20;
+            rootThis.currentRectCoords.width = pasportWidth;
+            rootThis.currentRectCoords.height = pasportHeight;
+            ctx.strokeRect(ctx.canvas.width / 4 + pasportWidth * 0.05, pasportMiddle+ pasportWidth * 0.129, pasportPhotoWidth, pasportPhotoHeight);
+          }
+          else {
+            let heightIndent = 20;
+            let pasportWidth = 10000;
+            let pasportHeight = ctx.canvas.height;
+            while(pasportWidth>ctx.canvas.width){
+              pasportHeight = ctx.canvas.height-heightIndent*2;
+              pasportWidth = pasportHeight*1000/1347;
+              heightIndent+=10;
+            }
+            const widthIndent = (ctx.canvas.width - pasportWidth)/2;
+            const pasportMiddle = heightIndent + (pasportHeight / 2);
+            const pasportPhotoWidth = pasportWidth * 0.28;
+            const pasportPhotoHeight = pasportWidth * 0.357;
 
+            ctx.fillStyle = 'rgba(0,0,0,0.8)';
+            ctx.fillRect(0, 0, ctx.canvas.width, heightIndent - 2);
+            ctx.fillRect(0, heightIndent - 2, widthIndent - 2, 2 + pasportHeight + 2);
+            ctx.fillRect(widthIndent + pasportWidth + 2,heightIndent - 2, ctx.canvas.width, 2 + pasportHeight + 2);
+            ctx.fillRect(0, 20 + pasportHeight + 2, ctx.canvas.width, ctx.canvas.height);
+            ctx.setLineDash([0, 0]);
+            ctx.lineWidth =5;
+            ctx.strokeStyle = 'yellow';
+            ctx.strokeRect(widthIndent, heightIndent, pasportWidth,pasportHeight);
+            ctx.lineWidth =2;
+            ctx.setLineDash([10, 10]);
+            ctx.strokeRect(widthIndent, pasportMiddle, pasportWidth,0);
+            ctx.setLineDash([0, 0]);
+            ctx.strokeStyle = 'red';
+            rootThis.currentRectCoords.x = widthIndent;
+            rootThis.currentRectCoords.y = heightIndent;
+            rootThis.currentRectCoords.width = pasportWidth;
+            rootThis.currentRectCoords.height = pasportHeight;
+            ctx.strokeRect(widthIndent + pasportWidth * 0.05, pasportMiddle+ pasportWidth * 0.129, pasportPhotoWidth,pasportPhotoHeight);
+          }
+          // if($mir)
+          //   ctx.setTransform(1,0,0,1,0,0);
+          setTimeout(loop, 1000 / 30); // drawing at 30fps
 
+        }
+      })();
+    }
 
     /*
     // camera stream video element
@@ -191,90 +332,53 @@ export class CameraComponent implements OnInit, AfterViewInit {
     });
 
 */
-    const ctx = this.canvas.nativeElement.getContext('2d');
 
-
-
-    this.video.nativeElement.addEventListener("loadedmetadata", (e) => {
-
-      this.canvas.nativeElement.width = e.target.videoWidth;
-      this.canvas.nativeElement.height = e.target.videoHeight;
-
-
-      /*
-            if (!pictureWidth && !pictureHeight) {
-                //firefox fails to deliver info about video size on time (issue #926753), we have to wait
-                var waitingForSize = setInterval(function () {
-                  if (video.videoWidth && video.videoHeight) {
-                    pictureWidth = video.videoWidth;
-                    pictureHeight = video.videoHeight;
-
-                    clearInterval(waitingForSize);
-                  }
-                }, 100);
-              }
-              */
-    });
-
-
-
-    this.video.nativeElement.addEventListener('play', function() {
-      const $this = this;
-
-      (function loop() {
-        if (!$this.paused && !$this.ended) {
-          ctx.translate($this.width,0);
-          ctx.scale(-1,1);
-          ctx.drawImage($this, 0, 0);
-          if (ctx.canvas.offsetWidth>600) {
-            ctx.setLineDash([0, 0]);
-            ctx.lineWidth =5;
-            ctx.strokeStyle = "yellow";
-            ctx.strokeRect(ctx.canvas.offsetWidth/4, 20, ctx.canvas.offsetWidth/2,ctx.canvas.offsetHeight-90);
-            ctx.lineWidth =2;
-            ctx.setLineDash([10, 5]);
-            ctx.strokeRect(ctx.canvas.offsetWidth/4, ctx.canvas.offsetHeight/2-20, ctx.canvas.offsetWidth/2,0);
-            ctx.setLineDash([0, 0]);
-            ctx.strokeStyle = "red";
-            ctx.strokeRect((ctx.canvas.offsetWidth/4)*2+50, ctx.canvas.offsetHeight/2+10, 80,100);
-          }
-          else {
-            ctx.setLineDash([0, 0]);
-            ctx.lineWidth =5;
-            ctx.strokeStyle = "yellow";
-            ctx.strokeRect(20, 20, ctx.canvas.width-20,ctx.canvas.height-90);
-            ctx.lineWidth =2;
-            ctx.setLineDash([10, 5]);
-            ctx.strokeRect(20, ctx.canvas.height/2-20, ctx.canvas.width-20,0);
-            ctx.setLineDash([0, 0]);
-            ctx.strokeStyle = "red";
-            ctx.strokeRect((ctx.canvas.width/2), ctx.canvas.height/2+10, 80,100);
-          }
-          ctx.setTransform(1,0,0,1,0,0);
-          setTimeout(loop, 1000 / 30); // drawing at 30fps
-
-        }
-      })();
-    }, 0);
   }
 
   public capture() {
     const ctx = this.canvas.nativeElement.getContext('2d');
-    this.photoCanvas.nativeElement.width = ctx.canvas.width/2;
-    this.photoCanvas.nativeElement.height = ctx.canvas.height-90;
-
-    const pctx = this.photoCanvas.nativeElement.getContext('2d');
-    pctx.translate(pctx.canvas.width,0);
-    pctx.scale(-1,1);
-    this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement,ctx.canvas.width/4,20,ctx.canvas.width/2,ctx.canvas.height-90, 0, 0, ctx.canvas.width/2, ctx.canvas.height-90);
+    this.photoCanvas.nativeElement.width = ctx.canvas.width / 2;
+    this.photoCanvas.nativeElement.height = (ctx.canvas.width / 2) * 1.247;
+    // const pctx = this.photoCanvas.nativeElement.getContext('2d');
+    // pctx.translate(pctx.canvas.width,0);
+    // pctx.scale(-1,1);
+   /* if (ctx.canvas.offsetWidth > ctx.canvas.offsetHeight)
+      this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement, ctx.canvas.width / 4,20,ctx.canvas.width/2,(ctx.canvas.width/2)*1.347, 0, 0, ctx.canvas.width/2, (ctx.canvas.width/2)*1.347);
+    else{
+      let heightIndent = 20;
+      let pasportWidth = 10000;
+      let pasportHeight = ctx.canvas.height;
+      while(pasportWidth>ctx.canvas.width){
+        pasportHeight = ctx.canvas.height-heightIndent*2;
+        pasportWidth = pasportHeight*1000/1347;
+        heightIndent+=10;
+      }
+      const widthIndent = (ctx.canvas.width-pasportWidth)/2;
+      this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement, widthIndent,heightIndent,pasportWidth,pasportHeight, 0, 0, pasportWidth, pasportHeight);
+    }*/
+    this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement, this.currentRectCoords.x, this.currentRectCoords.y, this.currentRectCoords.width, this.currentRectCoords.height, 0, 0, this.currentRectCoords.width, this.currentRectCoords.height);
     this.captures.push(this.photoCanvas.nativeElement.toDataURL('image/png'));
   }
 
   public flip() {
-    const supports = navigator.mediaDevices.getSupportedConstraints();
-    console.log(supports);
-    if ( supports['facingMode'] === true ) {
-      this.shouldFaceUser = !this.shouldFaceUser;
+    if ( this.stream == null ) { return; }
+    this.stream.getTracks().forEach(t => {
+      t.stop();
+    });
+    if (this.cameraIdNumber < this.maxCameraIds - 1) {
+      this.cameraIdNumber++;
+    } else {
+      this.cameraIdNumber = 0;
     }
+    this.startCam();
+  }
+
+  public mirror() {
+    if ( this.stream == null ) { return; }
+    this.stream.getTracks().forEach(t => {
+      t.stop();
+    });
+    this.isMirror = !this.isMirror;
+    this.startCam();
   }
 }

@@ -2,23 +2,20 @@
   <div>
     <!--<video id="camera-stream"></video>-->
     <div id="photo" [hidden]="!showCam">
-      <canvas id="test-canvas" #canvas [hidden]="!showCam"></canvas>
-      <canvas id="photo-canvas" #photoCanvas [hidden]="true"></canvas>
-      <div id="buttonBar">
-        <img id="ico_flip" src="../assets/logo/flip-ico.png" (click)="flip()" [hidden]="!showCam"/>
-        <!--<button disabled id="flip-btn" [hidden]="!showCam">-->
-          <!--Flip Camera-->
-        <!--</button>-->
-        <img id="ico_photo" src="../assets/logo/photo-ico2.png" (click)="capture()" [hidden]="!showCam">
-        <img id="ico_close" src="../assets/logo/close-ico2.png" (click)="showCam=false" [hidden]="!showCam"/>
-        <!-- <button id ="camClose-btn" (click)="showCam=false" [hidden]="!showCam">
-           Close Camera
-         </button>-->
+      <div id="centr_photo">
+        <canvas id="test-canvas" #canvas [hidden]="!showCam"></canvas>
+        <canvas id="photo-canvas" #photoCanvas [hidden]="true"></canvas>
+        <div id="buttonBar" [hidden]="!showCam">
+          <img id="ico_close" src="../assets/logo/close-ico2.png" (click)="showCam=false"/>
+          <!--<img id="ico_mirror" src="../assets/logo/mirror-ico.png" (click)="mirror()" />-->
+          <img id="ico_photo" src="../assets/logo/photo-ico2.png" (click)="capture()"/>
+          <img id="ico_flip" src="../assets/logo/flip-ico.png" (click)="flip()" />
+
+        </div>
       </div>
-
-
     </div>
-    <button id ="camOpen-btn" (click)="showCam=true" [hidden]="!!showCam">
+    <!--<button id ="camOpen-btn" (click)="showCam=true" [hidden]="!!showCam">-->
+    <button id ="camOpen-btn" mat-raised-button color="accent"(click)="startCam()" [hidden]="!!showCam">
       Open Camera
     </button>
 
@@ -26,7 +23,7 @@
 
   </div>
   <div id="app">
-    <div><video #video id="video" width="640" height="480" autoplay [hidden]=true></video></div>
+    <div><video #video id="video" autoplay [hidden]=true></video></div>
     <!--<div><button  id="snap" (click)="capture()" [hidden]="!showCam">Snap Photo</button></div>-->
     <!--<canvas #canvas id="canvas" width="640" height="480"></canvas>-->
     <ul>
