@@ -7,13 +7,13 @@ import { BehaviorSubject } from "rxjs";
 export class PassportFileService {
   constructor() {}
 
-  static passportFile: BehaviorSubject<Blob> = new BehaviorSubject(null);
+  passportFile: BehaviorSubject<Blob> = new BehaviorSubject(null);
 
-  static setPassportFile(passportFile: Blob): void {
+  setPassportFile(passportFile: Blob): void {
     this.passportFile.next(passportFile);
   }
 
-  static getPassportFile(): BehaviorSubject<Blob> {
+  getPassportFile(): BehaviorSubject<Blob> {
     return this.passportFile;
   }
 }

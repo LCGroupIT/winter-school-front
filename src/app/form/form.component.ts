@@ -9,13 +9,13 @@ import { PassportService } from "../passport.service";
   styleUrls: ["./form.component.scss"]
 })
 export class FormComponent implements OnInit {
-  constructor() {}
+  constructor(private passportService: PassportService) {}
 
   passport: Passport = new Passport();
 
   ngOnInit() {
-    PassportService.getPassport().subscribe(
-      passport => (this.passport = passport)
+    this.passportService.getPassport().subscribe(
+      passport => {this.passport = passport;  console.log(this.passport)}
     );
   }
 }

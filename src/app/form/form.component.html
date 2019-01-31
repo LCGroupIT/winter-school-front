@@ -27,18 +27,24 @@
   </mat-form-field>
   <div class="form__wrapper">
     <mat-form-field class="form__field">
-      <input
+      <!-- <input
         matInput
         placeholder="Дата выдачи"
         name="dateIssue"
         [(ngModel)]="passport.dateIssue"
+      /> -->
+      <input
+        matInput
+        [matDatepicker]="dateIssue"
+        placeholder="Дата выдачи"
+        name="dateIssue"
+        [(ngModel)]="passport.dateIssue"
       />
-      <!-- <input matInput [matDatepicker]="dateIssue" placeholder="Дата выдачи" />
       <mat-datepicker-toggle
         matSuffix
         [for]="dateIssue"
       ></mat-datepicker-toggle>
-      <mat-datepicker #dateIssue></mat-datepicker> -->
+      <mat-datepicker #dateIssue></mat-datepicker>
     </mat-form-field>
     <mat-form-field class="form__field">
       <input
@@ -75,25 +81,31 @@
   </mat-form-field>
   <div class="form__wrapper">
     <mat-form-field class="form__field">
-      <input matInput placeholder="Пол" name="sex" [(ngModel)]="passport.sex" />
+      <!-- <input matInput placeholder="Пол" name="sex" [(ngModel)]="passport.sex" /> -->
 
-      <!-- <mat-select placeholder="Пол">
-        <mat-option [value]="0">ЖЕН.</mat-option>
-        <mat-option [value]="1">МУЖ</mat-option>
-      </mat-select> -->
+      <mat-select placeholder="Пол" name="sex" [(ngModel)]="passport.sex">
+        <mat-option [value]="'ЖЕН'">ЖЕН</mat-option>
+        <mat-option [value]="'МУЖ'">МУЖ</mat-option>
+      </mat-select>
     </mat-form-field>
     <mat-form-field class="form__field">
-      <input
+      <!-- <input
         matInput
         placeholder="Дата рождения"
         name="birthDate"
         [(ngModel)]="passport.birthDate"
+      /> -->
+      <input
+        matInput
+        [matDatepicker]="birthDate"
+        placeholder="Дата рождения"
+        name="birthDate"
+        [(ngModel)]="passport.birthDate"
       />
-      <!-- <input matInput [matDatepicker]="birthDate" placeholder="Дата рождения" />
       <mat-datepicker-toggle
         matSuffix
         [for]="birthDate"
-      ></mat-datepicker-toggle> -->
+      ></mat-datepicker-toggle>
       <mat-datepicker #birthDate></mat-datepicker>
     </mat-form-field>
   </div>

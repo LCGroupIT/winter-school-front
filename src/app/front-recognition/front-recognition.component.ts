@@ -5,6 +5,7 @@ import { NgOpenCVService, OpenCVLoadResult } from "ng-open-cv";
 import { PassportFileService } from "../passport-file.service";
 import { PassportService } from "../passport.service";
 import { Passport } from "../passport";
+import { NgxUiLoaderService } from "ngx-ui-loader";
 
 interface ICoordinates {
   x: number;
@@ -32,11 +33,16 @@ export class FrontRecognitionComponent implements OnInit {
   numberData: string[];
   aboutDocData: string[];
 
-  constructor(private ngOpenCVService: NgOpenCVService) {}
+  constructor(
+    private ngOpenCVService: NgOpenCVService,
+    private passportService: PassportService,
+    private passportFileService: PassportFileService,
+    private ngxService: NgxUiLoaderService
+  ) {}
 
   ngOnInit() {
     this.openCVLoadResult = this.ngOpenCVService.isReady$;
-    PassportFileService.getPassportFile().subscribe(passportImage => {
+    this.passportFileService.getPassportFile().subscribe(passportImage => {
       if (passportImage) {
         this.passportImage = passportImage;
         this.loadImage(passportImage);
@@ -62,6 +68,7 @@ export class FrontRecognitionComponent implements OnInit {
           await this.getData();
           this.rotateImage();
           await this.getAboutDocData();
+          this.ngxService.stop()
           this.sendDataToForm();
         },
         err => console.log("Error loading image", err)
@@ -183,7 +190,7 @@ export class FrontRecognitionComponent implements OnInit {
       birthPlace: `${literalData[6]} ${literalData[7]} ${literalData[8]}`
     };
 
-    PassportService.setPassport(passport);
+    this.passportService.setPassport(passport);
   }
 
   getLiteralCoordinates = (width: number, height: number): ICoordinates[] => {
@@ -338,7 +345,7 @@ export class FrontRecognitionComponent implements OnInit {
 
     dirtyData.forEach((dirtyStr: string) => {
       const cleanStr = dirtyStr
-        .replace(/[^a-zA-ZА-Яа-яЁё\s]/gi, "")
+        .replace(/[^a-zA-ZА-Яа-яЁё\s- ]/gi, "")
         .replace(/\n/g, "");
       cleanData.push(cleanStr);
     });
@@ -350,7 +357,7 @@ export class FrontRecognitionComponent implements OnInit {
     const cleanData = [];
 
     dirtyData.forEach((dirtyStr: string) => {
-      const cleanStr = dirtyStr.replace(/[^\d]/gi, "");
+      const cleanStr = dirtyStr.replace(/[^\d-]/gi, "");
       cleanData.push(cleanStr);
     });
 
