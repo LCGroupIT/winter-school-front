@@ -357,7 +357,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
       this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement, widthIndent,heightIndent,pasportWidth,pasportHeight, 0, 0, pasportWidth, pasportHeight);
     }*/
     this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement, this.currentRectCoords.x, this.currentRectCoords.y, this.currentRectCoords.width, this.currentRectCoords.height, 0, 0, this.currentRectCoords.width, this.currentRectCoords.height);
-    this.captures.push(this.photoCanvas.nativeElement.toBlob(blob,'image/png'));
+    this.captures.push(this.photoCanvas.nativeElement.toDataURL('image/png'));
   }
 
   public flip() {
