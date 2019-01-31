@@ -240,7 +240,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
             ctx.setLineDash([10, 10]);
             ctx.strokeRect(ctx.canvas.width / 4 , pasportMiddle, pasportWidth, 0);
             ctx.setLineDash([0, 0]);
-            ctx.strokeStyle = 'red';
+            ctx.strokeStyle = 'orange';
             rootThis.currentRectCoords.x = ctx.canvas.width / 4;
             rootThis.currentRectCoords.y = 20;
             rootThis.currentRectCoords.width = pasportWidth;
@@ -274,7 +274,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
             ctx.setLineDash([10, 10]);
             ctx.strokeRect(widthIndent, pasportMiddle, pasportWidth,0);
             ctx.setLineDash([0, 0]);
-            ctx.strokeStyle = 'red';
+            ctx.strokeStyle = 'green';
             rootThis.currentRectCoords.x = widthIndent;
             rootThis.currentRectCoords.y = heightIndent;
             rootThis.currentRectCoords.width = pasportWidth;
@@ -337,8 +337,8 @@ export class CameraComponent implements OnInit, AfterViewInit {
 
   public capture() {
     const ctx = this.canvas.nativeElement.getContext('2d');
-    this.photoCanvas.nativeElement.width = ctx.canvas.width / 2;
-    this.photoCanvas.nativeElement.height = (ctx.canvas.width / 2) * 1.247;
+    this.photoCanvas.nativeElement.width = this.currentRectCoords.width;
+    this.photoCanvas.nativeElement.height = this.currentRectCoords.height;
     // const pctx = this.photoCanvas.nativeElement.getContext('2d');
     // pctx.translate(pctx.canvas.width,0);
     // pctx.scale(-1,1);
@@ -357,7 +357,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
       this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement, widthIndent,heightIndent,pasportWidth,pasportHeight, 0, 0, pasportWidth, pasportHeight);
     }*/
     this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement, this.currentRectCoords.x, this.currentRectCoords.y, this.currentRectCoords.width, this.currentRectCoords.height, 0, 0, this.currentRectCoords.width, this.currentRectCoords.height);
-    this.captures.push(this.photoCanvas.nativeElement.toDataURL('image/png'));
+    this.captures.push(this.photoCanvas.nativeElement.toBlob(blob,'image/png'));
   }
 
   public flip() {
