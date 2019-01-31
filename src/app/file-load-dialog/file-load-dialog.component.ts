@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { MatDialogRef } from "@angular/material";
+import { PassportFileService } from "../passport-file.service";
 
 @Component({
   selector: "app-file-load-dialog",
@@ -23,5 +24,6 @@ export class FileLoadDialogComponent implements OnInit {
 
   onUploadFinished(e) {
     console.log("onUploadFinished", e);
+    PassportFileService.setPassportFile(e.file);
   }
 }
