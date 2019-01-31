@@ -367,6 +367,9 @@ MIT
 
 @angular/material/form-field
 
+ng-open-cv
+SEE LICENSE IN LICENSE
+
 zone.js
 MIT
 The MIT License
