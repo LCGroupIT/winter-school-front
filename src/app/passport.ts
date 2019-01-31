@@ -1,6 +1,6 @@
 export class Passport {
-  series?: number;
-  number?: number;
+  series?: number | string;
+  number?: number | string;
   placeIssue?: string;
   dateIssue?: Date | string;
   departmentCode?: string;
