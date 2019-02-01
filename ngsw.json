@@ -6,13 +6,7 @@
       "name": "app",
       "installMode": "prefetch",
       "updateMode": "prefetch",
-      "urls": [
-        "/index.html",
-        "/main.79f96bacca8c4093a427.js",
-        "/polyfills.f5ce8ecea387adbb1689.js",
-        "/runtime.b57bf819d5bdce77f1c7.js",
-        "/styles.3e921456cf4c376c05d3.css"
-      ],
+      "urls": [],
       "patterns": []
     },
     {
@@ -133,12 +127,7 @@
     "/assets/opencv/data/haarcascades/haarcascade_smile.xml": "34f1d0d64a6a1ab2f8e83ba512d435207f2c9b05",
     "/assets/opencv/data/haarcascades/haarcascade_upperbody.xml": "faf88825a18ede2b98a11d035f6a9bafd06096de",
     "/assets/opencv/wasm/3.4/opencv.js": "dfb0b5d1d25dfe4fdd5eaf47200179901e9283aa",
-    "/assets/opencv/wasm/3.4/opencv_js.wasm": "552a0f05faddd81723e1bdf5197d55752ce49caa",
-    "/index.html": "cee54b9ae4fff7945cebd95ab680b41d379d9ab2",
-    "/main.79f96bacca8c4093a427.js": "c068ad5336ab3470c1627f40fdaebb675ef193dc",
-    "/polyfills.f5ce8ecea387adbb1689.js": "6946e10a03311677a01490b8e91741668e64e17e",
-    "/runtime.b57bf819d5bdce77f1c7.js": "b62956c2192bfe5516d6374e753773901ed50ec5",
-    "/styles.3e921456cf4c376c05d3.css": "11113d820d57ddc5dffba0b885656173e95892e2"
+    "/assets/opencv/wasm/3.4/opencv_js.wasm": "552a0f05faddd81723e1bdf5197d55752ce49caa"
   },
   "navigationUrls": [
     {
