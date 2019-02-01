@@ -8,7 +8,7 @@
       "updateMode": "prefetch",
       "urls": [
         "/index.html",
-        "/main.7e1f775bdadf438d1c37.js",
+        "/main.79f96bacca8c4093a427.js",
         "/polyfills.f5ce8ecea387adbb1689.js",
         "/runtime.b57bf819d5bdce77f1c7.js",
         "/styles.3e921456cf4c376c05d3.css"
@@ -134,8 +134,8 @@
     "/assets/opencv/data/haarcascades/haarcascade_upperbody.xml": "faf88825a18ede2b98a11d035f6a9bafd06096de",
     "/assets/opencv/wasm/3.4/opencv.js": "dfb0b5d1d25dfe4fdd5eaf47200179901e9283aa",
     "/assets/opencv/wasm/3.4/opencv_js.wasm": "552a0f05faddd81723e1bdf5197d55752ce49caa",
-    "/index.html": "13b31ffdfcb74fcb5f77611f137dc429bc7fdc09",
-    "/main.7e1f775bdadf438d1c37.js": "b80cb4ccf88caa27e6be22159f65c5231991b502",
+    "/index.html": "73e7240955472b31db0f714a4fee2fbb08ed189b",
+    "/main.79f96bacca8c4093a427.js": "c068ad5336ab3470c1627f40fdaebb675ef193dc",
     "/polyfills.f5ce8ecea387adbb1689.js": "6946e10a03311677a01490b8e91741668e64e17e",
     "/runtime.b57bf819d5bdce77f1c7.js": "b62956c2192bfe5516d6374e753773901ed50ec5",
     "/styles.3e921456cf4c376c05d3.css": "11113d820d57ddc5dffba0b885656173e95892e2"
