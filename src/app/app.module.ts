@@ -15,7 +15,7 @@ import { CameraComponent } from "./camera/camera.component";
 import { FileLoadButtonComponent } from "./file-load-button/file-load-button.component";
 import { FileLoadDialogComponent } from "./file-load-dialog/file-load-dialog.component";
 import { FrontRecognitionComponent } from "./front-recognition/front-recognition.component";
-import {MainPageComponent} from './main-page/main-page.component';
+
 
 import { PassportService } from "./passport.service";
 import { PassportFileService } from "./passport-file.service";
@@ -46,7 +46,6 @@ const appRoutes: Routes =[
     FileLoadButtonComponent,
     FileLoadDialogComponent,
     FrontRecognitionComponent,
-    MainPageComponent
   ],
   imports: [
     BrowserModule,
