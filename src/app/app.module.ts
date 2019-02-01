@@ -1,3 +1,4 @@
+import {Routes, RouterModule} from '@angular/router';
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
@@ -14,6 +15,7 @@ import { CameraComponent } from "./camera/camera.component";
 import { FileLoadButtonComponent } from "./file-load-button/file-load-button.component";
 import { FileLoadDialogComponent } from "./file-load-dialog/file-load-dialog.component";
 import { FrontRecognitionComponent } from "./front-recognition/front-recognition.component";
+
 
 import { PassportService } from "./passport.service";
 import { PassportFileService } from "./passport-file.service";
@@ -35,6 +37,10 @@ const openCVConfig = {
   usingWasm: false
 };
 
+const appRoutes: Routes =[
+  { path: 'camera', component: CameraComponent}
+];
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +48,7 @@ const openCVConfig = {
     CameraComponent,
     FileLoadButtonComponent,
     FileLoadDialogComponent,
-    FrontRecognitionComponent
+    FrontRecognitionComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +60,7 @@ const openCVConfig = {
     MatNativeDateModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule.forRoot(appRoutes, {initialNavigation: false}),
     MatSelectModule,
     MatDialogModule,
     MatButtonModule,
