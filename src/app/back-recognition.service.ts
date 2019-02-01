@@ -7,7 +7,7 @@ import { Recognize } from "./recognize";
   providedIn: "root"
 })
 export class BackRecognitionService implements Recognize {
-  url = "http://37.192.249.90:8894/api/values/uploadfiles";
+  url = "https://37.192.249.90:8894/api/values/uploadfiles";
 
   constructor(private httpClient: HttpClient) {}
 

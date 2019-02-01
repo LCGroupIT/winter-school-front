@@ -8,7 +8,7 @@ import * as moment from "moment";
   providedIn: "root"
 })
 export class BackEndService {
-  url: string = "http://37.192.249.90:8894/api/values";
+  url: string = "https://37.192.249.90:8894/api/values";
 
   constructor(
     private httpClient: HttpClient,
