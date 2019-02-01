@@ -28,6 +28,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatButtonModule } from "@angular/material/button";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { APP_BASE_HREF } from '@angular/common';
 
 const openCVConfig = {
   scriptUrl: "assets/opencv/asm/3.4/opencv.js",
@@ -65,6 +66,7 @@ const openCVConfig = {
   entryComponents: [FileLoadDialogComponent],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: "ru-RU" },
+    { provide: APP_BASE_HREF, useValue: environment.production ? '/winter-school-front' : '/'},
     PassportService,
     PassportFileService,
     NgxUiLoaderService
