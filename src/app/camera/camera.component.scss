@@ -28,18 +28,32 @@ body {
 #ico_photo{
   height: 90%;
   margin-right: 3%;
+  max-width: 100%;
+  @media handheld{
+    height: 70%;
+    }
 }
+
 #ico_close{
   height: 70%;
   margin-right: 3%;
+  @media handheld{
+    height: 50%;
+  }
 }
 #ico_flip{
   height: 70%;
   margin-right: 3%;
+  @media handheld{
+    height: 50%;
+  }
 }
 #ico_mirror{
   height: 70%;
   margin-right: 3%;
+  @media handheld{
+    height: 50%;
+  }
 }
 #photo{
   position: fixed;

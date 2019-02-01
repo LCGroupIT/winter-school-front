@@ -57,7 +57,7 @@ const appRoutes: Routes =[
     MatNativeDateModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, {initialNavigation: false}),
     MatSelectModule,
     MatDialogModule,
     MatButtonModule,

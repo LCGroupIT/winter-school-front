@@ -123,23 +123,6 @@ export class CameraComponent implements OnInit, AfterViewInit {
             this.pictureWidth = e.target.videoWidth;
             this.pictureHeight = e.target.videoHeight;
             resolve();
-            /*
-                          if (!pictureWidth && !pictureHeight) {
-                            //firefox fails to deliver info about video size on time (issue #926753), we have to wait
-                            const waitingForSize = setInterval(() => {
-                              if (this.video.nativeElement.videoWidth && this.video.nativeElement.videoHeight) {
-                                pictureWidth = this.video.nativeElement.videoWidth;
-                                pictureHeight = this.video.nativeElement.videoHeight;
-
-                                clearInterval(waitingForSize);
-                                resolve();
-                              }
-                            }, 100);
-                          } else {
-                            resolve();
-                          }
-                        }, false);
-                        */
           });
         }).catch(function () {
         reject('There is no access to your camera, have you denied it?');
@@ -170,25 +153,11 @@ export class CameraComponent implements OnInit, AfterViewInit {
     this.video.nativeElement.addEventListener('loadedmetadata', (e) => {
       this.canvas.nativeElement.width = e.target.videoWidth;
       this.canvas.nativeElement.height = e.target.videoHeight;
-      /*
-            if (!pictureWidth && !pictureHeight) {
-                //firefox fails to deliver info about video size on time (issue #926753), we have to wait
-                var waitingForSize = setInterval(function () {
-                  if (video.videoWidth && video.videoHeight) {
-                    pictureWidth = video.videoWidth;
-                    pictureHeight = video.videoHeight;
-
-                    clearInterval(waitingForSize);
-                  }
-                }, 100);
-              }
-              */
     });
 
     const closeBtn = document.querySelector('#ico_close');
     closeBtn.addEventListener('backKeyDown', function(e) {
       alert('you hit the back key!');
-      this.showCam = false;
       if ( this.stream == null ) { return; }
       this.stream.getTracks().forEach(t => {
         t.stop();
@@ -232,14 +201,24 @@ export class CameraComponent implements OnInit, AfterViewInit {
           if (rootThis.isMirror) {
             ctx.setTransform(1, 0, 0, 1, 0, 0);
           }
+          let heightIndent, pasportHeight,pasportWidth,widthIndent,pasportMiddle,pasportPhotoWidth,pasportPhotoHeight;
           if (ctx.canvas.offsetWidth > ctx.canvas.offsetHeight) {
-            const heightIndent = (50 * 100) / ctx.canvas.height;
-            const pasportHeight = ctx.canvas.height - 2 * heightIndent;
-            const pasportWidth = 10 * pasportHeight / 14;
-            const widthIndent = (ctx.canvas.width - pasportWidth) / 2;
-            const pasportMiddle = heightIndent + (pasportHeight / 2);
-            const pasportPhotoWidth = pasportWidth * 0.28;
-            const pasportPhotoHeight = pasportWidth * 0.357;
+            heightIndent = (50 * 100) / ctx.canvas.height;
+            pasportHeight = ctx.canvas.height - 2 * heightIndent;
+            pasportWidth = 10 * pasportHeight / 14;
+            widthIndent = (ctx.canvas.width - pasportWidth) / 2;
+            pasportMiddle = heightIndent + (pasportHeight / 2);
+            pasportPhotoWidth = pasportWidth * 0.28;
+            pasportPhotoHeight = pasportWidth * 0.357;
+          } else {
+            widthIndent = 100 * 100 / ctx.canvas.width;
+            pasportWidth = ctx.canvas.width - 2 * widthIndent;
+            pasportHeight = pasportWidth * 1.4;
+            heightIndent = (ctx.canvas.height - pasportHeight) / 2;
+            pasportMiddle = heightIndent + (pasportHeight / 2);
+            pasportPhotoWidth = pasportWidth * 0.28;
+            pasportPhotoHeight = pasportWidth * 0.357;
+            }
             ctx.fillStyle = 'rgba(0,0,0,0.8)';
             ctx.fillRect(0, 0, ctx.canvas.width, heightIndent - 2);
             ctx.fillRect(0, heightIndent - 2.3, widthIndent, 2 + pasportHeight + 2.6);
@@ -286,8 +265,31 @@ export class CameraComponent implements OnInit, AfterViewInit {
             ctx.strokeRect(ctx.canvas.width / 4 + pasportWidth * 0.05, pasportMiddle + pasportWidth * 0.129,
               pasportPhotoWidth, pasportPhotoHeight);*/
 
-          } else {
-            let heightIndent = 20;
+          /*} else {
+
+
+            ctx.fillStyle = 'rgba(0,0,0,0.8)';
+            ctx.fillRect(0, 0, ctx.canvas.width, heightIndent - 2);
+            ctx.fillRect(0, heightIndent - 2, widthIndent - 2, 2 + pasportHeight + 2);
+            ctx.fillRect(widthIndent + pasportWidth + 2, heightIndent - 2, ctx.canvas.width, 2 + pasportHeight + 2);
+            ctx.fillRect(0, 20 + pasportHeight + 2, ctx.canvas.width, ctx.canvas.height);
+            ctx.setLineDash([0, 0]);
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = 'yellow';
+            ctx.strokeRect(widthIndent, heightIndent, pasportWidth, pasportHeight);
+            ctx.lineWidth = 2;
+            ctx.setLineDash([10, 10]);
+            ctx.strokeRect(widthIndent, pasportMiddle, pasportWidth, 0);
+            ctx.setLineDash([0, 0]);
+            ctx.strokeStyle = 'red';
+            rootThis.currentRectCoords.x = widthIndent;
+            rootThis.currentRectCoords.y = heightIndent;
+            rootThis.currentRectCoords.width = pasportWidth;
+            rootThis.currentRectCoords.height = pasportHeight;
+            ctx.strokeRect(widthIndent + pasportWidth * 0.05, pasportMiddle + pasportWidth * 0.129,
+              pasportPhotoWidth, pasportPhotoHeight);
+          }*/
+           /* let heightIndent = 20;
             let pasportWidth = 10000;
             let pasportHeight = ctx.canvas.height;
             while (pasportWidth > ctx.canvas.width) {
@@ -320,7 +322,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
             rootThis.currentRectCoords.height = pasportHeight;
             ctx.strokeRect(widthIndent + pasportWidth * 0.05, pasportMiddle + pasportWidth * 0.129,
               pasportPhotoWidth, pasportPhotoHeight);
-          }
+          }*/
 
           setTimeout(loop, 1000 / 30); // drawing at 30fps
 
