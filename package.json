@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "npx ng build --prod --base-href winter-school-front && npx gh-pages -d dist/winter-school-front"
+    "deploy": "npx ng build --prod && npx gh-pages -d dist/winter-school-front"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +23,7 @@
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
+    "@angular/service-worker": "~7.2.0",
     "angular2-image-upload": "^1.0.0-rc.2",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
