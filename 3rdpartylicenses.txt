@@ -344,12 +344,6 @@ MIT
 @angular/common
 MIT
 
-@angular/platform-browser
-MIT
-
-@angular/router
-MIT
-
 @angular/animations
 MIT
 
@@ -403,14 +397,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-@angular/material/dialog
+ng-open-cv
+SEE LICENSE IN LICENSE
 
-@angular/forms
+@angular/platform-browser
 MIT
 
-@angular/material/button
-
-@angular/material/datepicker
+@angular/router
+MIT
 
 ngx-ui-loader
 MIT
@@ -437,6 +431,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
+@angular/material/dialog
+
+@angular/forms
+MIT
+
+@angular/material/button
+
+@angular/material/datepicker
+
+@angular/material/snack-bar
+
 angular2-image-upload
 MIT
 
@@ -445,9 +450,6 @@ MIT
 @angular/material/select
 
 @angular/material/core
-
-ng-open-cv
-SEE LICENSE IN LICENSE
 
 @angular/service-worker
 MIT
