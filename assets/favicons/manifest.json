@@ -1,7 +1,7 @@
 {
     "name": "Passport recognition",
     "short_name": "Passport recognition",
-    "display": "browser",
+    "display": "standalone",
     "orientation": "portrait",
     "start_url": "/winter-school-front",
     "theme_color": "#ff4081",
