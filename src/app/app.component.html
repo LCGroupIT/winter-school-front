@@ -1,7 +1,20 @@
 <div class="app">
-  <h1 class="app__title">Введите данные паспотра</h1>
+  <h1 class="app__title">Введите данные паспорта</h1>
   <div class="app__buttons-wrapper">
     <div class="app__button"><app-file-load-button></app-file-load-button></div>
+    <div class="app__button">
+      <button
+        id="camOpen-btn"
+        mat-raised-button
+        color="accent"
+        routerLink="/camera"
+      >
+        Сделать фото
+      </button>
+    </div>
+    <div class="app__button">
+      <app-select-recognition></app-select-recognition>
+    </div>
   </div>
   <app-form></app-form>
 </div>
