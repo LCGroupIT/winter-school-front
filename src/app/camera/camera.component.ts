@@ -1,5 +1,9 @@
 import {Component, OnInit, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import {Router} from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import {PassportFileService} from '../passport-file.service';
+import {Subscription} from 'rxjs';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-cam',
@@ -7,7 +11,6 @@ import {PassportFileService} from '../passport-file.service';
   styleUrls: ['./camera.component.scss']
 })
 export class CameraComponent implements OnInit, AfterViewInit {
-  showCam = false;
 
   @ViewChild('video')
   public video: ElementRef;
@@ -23,7 +26,8 @@ export class CameraComponent implements OnInit, AfterViewInit {
 
   public captures: Array<any>;
 
-
+  private  routeSubscription: Subscription;
+  private  querySubscription: Subscription;
 
   pictureWidth = 640;
   pictureHeight = 460;
@@ -39,16 +43,25 @@ export class CameraComponent implements OnInit, AfterViewInit {
   };
 
 
-  public constructor(private passportFileService: PassportFileService) {
+  public constructor(private passportFileService: PassportFileService,
+                     private route: ActivatedRoute,
+                     private router: Router,
+                     private ngxService: NgxUiLoaderService
+  ) {
     this.captures = [];
+    this.routeSubscription = route.params.subscribe(params => {
+      this.startCam();
+    });
+    this.querySubscription = route.queryParams.subscribe(
+      (queryParam: any) => {
+        // this.startCam();
+      });
   }
-
   public ngOnInit() { }
 
 
   searchForRearCamera() {
     return new Promise((resolve, reject) => {
-      //MediaStreamTrack.getSources seams to be supported only by Chrome
       if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
         resolve(null);
       }
@@ -61,10 +74,10 @@ export class CameraComponent implements OnInit, AfterViewInit {
           }).map((device) => {
             return device.deviceId;
           });
+          rearCameraIds.reverse();
 
           if (rearCameraIds.length) {
             this.maxCameraIds = rearCameraIds.length;
-            console.log(rearCameraIds);
             resolve(rearCameraIds[this.cameraIdNumber]);
           } else {
             resolve(null);
@@ -92,8 +105,6 @@ export class CameraComponent implements OnInit, AfterViewInit {
           ]
         }
       };
-
-      //if rear camera is available - use it
       if (rearCameraId) {
         videoSettings.video.optional.push(<any>{
           sourceId: rearCameraId
@@ -103,12 +114,12 @@ export class CameraComponent implements OnInit, AfterViewInit {
 
       navigator.mediaDevices.getUserMedia(<any>videoSettings)
         .then((_stream) => {
-          //Setup the video stream
+          // Setup the video stream
           this.stream = _stream;
           this.video.nativeElement.srcObject = this.stream;
 
           this.video.nativeElement.addEventListener('loadedmetadata', (e) => {
-            //get video width and height as it might be different than we requested
+            // get video width and height as it might be different than we requested
             this.pictureWidth = e.target.videoWidth;
             this.pictureHeight = e.target.videoHeight;
             resolve();
@@ -140,8 +151,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
 
 
 
-  startCam(){
-    this.showCam = true;
+  startCam() {
     this.searchForRearCamera().then(id => {
       this.setupVideo(id).then(() => {
         console.log('ok');
@@ -156,7 +166,6 @@ export class CameraComponent implements OnInit, AfterViewInit {
   public ngAfterViewInit() {
 
     const ctx = this.canvas.nativeElement.getContext('2d');
-
 
     this.video.nativeElement.addEventListener('loadedmetadata', (e) => {
       this.canvas.nativeElement.width = e.target.videoWidth;
@@ -198,7 +207,6 @@ export class CameraComponent implements OnInit, AfterViewInit {
       });
     }
     */
-    
     // this.searchForRearCamera().then(id => {
     //   this.setupVideo(id).then(() => {
     //     console.log('ok');
@@ -207,22 +215,52 @@ export class CameraComponent implements OnInit, AfterViewInit {
 
     function Draw(event) {
       const $this = this.video.nativeElement;
-      const $mir = this.isMirror;
       const rootThis = this;
 
       (function loop() {
         if (!$this.paused && !$this.ended) {
 
 
-          // if($mir){
-          //   ctx.translate($this.width, 0);
-          //   ctx.scale(-1, 1);
-          // }
+          if (rootThis.isMirror) {
+            ctx.scale(-1, 1);
+            ctx.translate(-ctx.canvas.width, 0);
+          }
+          // ctx.scale(-1, 1);
+          // ctx.translate($this.width, 0);
 
           ctx.drawImage($this, 0, 0);
-
+          if (rootThis.isMirror) {
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+          }
           if (ctx.canvas.offsetWidth > ctx.canvas.offsetHeight) {
-            const pasportWidth = ctx.canvas.width / 2;
+            const heightIndent = (50 * 100) / ctx.canvas.height;
+            const pasportHeight = ctx.canvas.height - 2 * heightIndent;
+            const pasportWidth = 10 * pasportHeight / 14;
+            const widthIndent = (ctx.canvas.width - pasportWidth) / 2;
+            const pasportMiddle = heightIndent + (pasportHeight / 2);
+            const pasportPhotoWidth = pasportWidth * 0.28;
+            const pasportPhotoHeight = pasportWidth * 0.357;
+            ctx.fillStyle = 'rgba(0,0,0,0.8)';
+            ctx.fillRect(0, 0, ctx.canvas.width, heightIndent - 2);
+            ctx.fillRect(0, heightIndent - 2.3, widthIndent, 2 + pasportHeight + 2.6);
+            ctx.fillRect(widthIndent + pasportWidth + 2, heightIndent - 2.3, widthIndent - 2, 2 + pasportHeight + 2.6);
+            ctx.fillRect(0, heightIndent + pasportHeight + 2, ctx.canvas.width, heightIndent - 2);
+            ctx.setLineDash([0, 0]);
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = 'yellow';
+            ctx.strokeRect(widthIndent, heightIndent, pasportWidth, pasportHeight);
+            ctx.lineWidth = 2;
+            ctx.setLineDash([10, 10]);
+            ctx.strokeRect(widthIndent , pasportMiddle, pasportWidth, 0);
+            ctx.setLineDash([0, 0]);
+            ctx.strokeStyle = 'red';
+            rootThis.currentRectCoords.x = widthIndent;
+            rootThis.currentRectCoords.y = heightIndent;
+            rootThis.currentRectCoords.width = pasportWidth;
+            rootThis.currentRectCoords.height = pasportHeight;
+            ctx.strokeRect(widthIndent + pasportWidth * 0.05, pasportMiddle + pasportHeight * 0.129,
+              pasportPhotoWidth, pasportPhotoHeight);
+           /* const pasportWidth = ctx.canvas.width / 2;
             const pasportHeight = pasportWidth * 1.347;
             const pasportMiddle = 20 + (pasportHeight / 2);
             const pasportPhotoWidth = pasportWidth * 0.28;
@@ -240,13 +278,14 @@ export class CameraComponent implements OnInit, AfterViewInit {
             ctx.setLineDash([10, 10]);
             ctx.strokeRect(ctx.canvas.width / 4 , pasportMiddle, pasportWidth, 0);
             ctx.setLineDash([0, 0]);
-            ctx.strokeStyle = 'blue';
+            ctx.strokeStyle = 'red';
             rootThis.currentRectCoords.x = ctx.canvas.width / 4;
             rootThis.currentRectCoords.y = 20;
             rootThis.currentRectCoords.width = pasportWidth;
             rootThis.currentRectCoords.height = pasportHeight;
             ctx.strokeRect(ctx.canvas.width / 4 + pasportWidth * 0.05, pasportMiddle + pasportWidth * 0.129,
-              pasportPhotoWidth, pasportPhotoHeight);
+              pasportPhotoWidth, pasportPhotoHeight);*/
+
           } else {
             let heightIndent = 20;
             let pasportWidth = 10000;
@@ -256,7 +295,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
               pasportWidth = pasportHeight * 1000 / 1347;
               heightIndent += 10;
             }
-            const widthIndent = (ctx.canvas.width - pasportWidth)/ 2;
+            const widthIndent = (ctx.canvas.width - pasportWidth) / 2;
             const pasportMiddle = heightIndent + (pasportHeight / 2);
             const pasportPhotoWidth = pasportWidth * 0.28;
             const pasportPhotoHeight = pasportWidth * 0.357;
@@ -274,7 +313,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
             ctx.setLineDash([10, 10]);
             ctx.strokeRect(widthIndent, pasportMiddle, pasportWidth, 0);
             ctx.setLineDash([0, 0]);
-            ctx.strokeStyle = 'green';
+            ctx.strokeStyle = 'red';
             rootThis.currentRectCoords.x = widthIndent;
             rootThis.currentRectCoords.y = heightIndent;
             rootThis.currentRectCoords.width = pasportWidth;
@@ -282,8 +321,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
             ctx.strokeRect(widthIndent + pasportWidth * 0.05, pasportMiddle + pasportWidth * 0.129,
               pasportPhotoWidth, pasportPhotoHeight);
           }
-          // if($mir)
-          //   ctx.setTransform(1,0,0,1,0,0);
+
           setTimeout(loop, 1000 / 30); // drawing at 30fps
 
         }
@@ -338,13 +376,17 @@ export class CameraComponent implements OnInit, AfterViewInit {
 
   public capture() {
     const ctx = this.canvas.nativeElement.getContext('2d');
+    ctx.strokeStyle = 'black';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     this.photoCanvas.nativeElement.width = this.currentRectCoords.width;
     this.photoCanvas.nativeElement.height = this.currentRectCoords.height;
    /* const pctx = this.photoCanvas.nativeElement.getContext('2d');
     pctx.translate(pctx.canvas.width,0);
     pctx.scale(-1,1);*/
    /* if (ctx.canvas.offsetWidth > ctx.canvas.offsetHeight)
-      this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement, ctx.canvas.width / 4,20,ctx.canvas.width/2,(ctx.canvas.width/2)*1.347, 0, 0, ctx.canvas.width/2, (ctx.canvas.width/2)*1.347);
+      this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement,
+       ctx.canvas.width / 4,20,ctx.canvas.width/2,(ctx.canvas.width/2)*1.347,
+        0, 0, ctx.canvas.width/2, (ctx.canvas.width/2)*1.347);
     else{
       let heightIndent = 20;
       let pasportWidth = 10000;
@@ -355,14 +397,27 @@ export class CameraComponent implements OnInit, AfterViewInit {
         heightIndent+=10;
       }
       const widthIndent = (ctx.canvas.width-pasportWidth)/2;
-      this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement, widthIndent,heightIndent,pasportWidth,pasportHeight, 0, 0, pasportWidth, pasportHeight);
+      this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement,
+       widthIndent,heightIndent,pasportWidth,pasportHeight, 0, 0, pasportWidth, pasportHeight);
     }*/
 
-    this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement, this.currentRectCoords.x, this.currentRectCoords.y, this.currentRectCoords.width, this.currentRectCoords.height, 0, 0, this.currentRectCoords.width, this.currentRectCoords.height);
-    this.photoCanvas.nativeElement.toBlob(function(blob) {
+    this.photoCanvas.nativeElement.getContext('2d').drawImage(this.video.nativeElement,
+      this.currentRectCoords.x, this.currentRectCoords.y, this.currentRectCoords.width, this.currentRectCoords.height,
+      0, 0, this.currentRectCoords.width, this.currentRectCoords.height);
+    this.ngxService.start();
+    this.photoCanvas.nativeElement.toBlob((blob: Blob) => {
       this.passportFileService.setPassportFile(blob);
+      this.stop();
     }, 'image/png');
-    this.captures.push(this.photoCanvas.nativeElement.toDataURL('image/png'));
+
+    // this.captures.push(this.photoCanvas.nativeElement.toDataURL('image/png'));
+   /* if ( this.stream == null ) { return; }
+    this.stream.getTracks().forEach(t => {
+      t.stop();
+    });
+    ctx.drawImage(this.video.nativeElement,
+      this.currentRectCoords.x, this.currentRectCoords.y, this.currentRectCoords.width, this.currentRectCoords.height,
+      0, 0, this.currentRectCoords.width, this.currentRectCoords.height);*/
   }
 
   public flip() {
@@ -385,5 +440,14 @@ export class CameraComponent implements OnInit, AfterViewInit {
     });
     this.isMirror = !this.isMirror;
     this.startCam();
+  }
+
+  public stop() {
+    // this.ngxService.start();
+    if ( this.stream == null ) { return; }
+    this.stream.getTracks().forEach(t => {
+      t.stop();
+    })
+    this.router.navigate(['']);
   }
 }

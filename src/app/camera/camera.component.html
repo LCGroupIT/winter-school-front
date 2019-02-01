@@ -1,34 +1,33 @@
 <div style="text-align:center">
   <div>
     <!--<video id="camera-stream"></video>-->
-    <div id="photo" [hidden]="!showCam">
+    <div id="photo">
       <div id="centr_photo">
-        <canvas id="test-canvas" #canvas [hidden]="!showCam"></canvas>
+        <canvas id="test-canvas" #canvas ></canvas>
         <canvas id="photo-canvas" #photoCanvas [hidden]="true"></canvas>
-        <div id="buttonBar" [hidden]="!showCam">
-          <img id="ico_close" src="../assets/logo/close-ico2.png" (click)="showCam=false"/>
-          <!--<img id="ico_mirror" src="../assets/logo/mirror-ico.png" (click)="mirror()" />-->
-          <img id="ico_photo" src="../assets/logo/photo-ico2.png" (click)="capture()"/>
+        <div id="buttonBar">
+          <img id="ico_close" src="../assets/logo/close-ico2.png" (click)="stop()"/>
+          <img id="ico_mirror" src="../assets/logo/mirror-ico.png" (click)="mirror()" />
           <img id="ico_flip" src="../assets/logo/flip-ico.png" (click)="flip()" />
+          <img id="ico_photo" src="../assets/logo/photo-ico2.png" (click)="capture()"/>
 
         </div>
       </div>
     </div>
+
     <!--<button id ="camOpen-btn" (click)="showCam=true" [hidden]="!!showCam">-->
-    <button id ="camOpen-btn" mat-raised-button color="accent"(click)="startCam()" [hidden]="!!showCam">
+    <!--<button id ="camOpen-btn" mat-raised-button color="accent"(click)="startCam()" [hidden]="!!showCam">
       Open Camera
-    </button>
+    </button>-->
 
 
 
   </div>
   <div id="app">
     <div><video #video id="video" autoplay [hidden]=true></video></div>
-    <!--<div><button  id="snap" (click)="capture()" [hidden]="!showCam">Snap Photo</button></div>-->
-    <!--<canvas #canvas id="canvas" width="640" height="480"></canvas>-->
     <ul>
       <li *ngFor="let c of captures">
-        <img src="{{ c }}" height="500" />
+        <img src="{{ c }}" height="300" />
       </li>
     </ul>
   </div>
