@@ -26,6 +26,8 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MAT_DATE_LOCALE } from "@angular/material/core";
 import { MatSelectModule } from "@angular/material/select";
 import { MatButtonModule } from "@angular/material/button";
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 const openCVConfig = {
   scriptUrl: "assets/opencv/asm/3.4/opencv.js",
@@ -57,7 +59,8 @@ const openCVConfig = {
     HttpClientModule,
     ImageUploadModule.forRoot(),
     NgOpenCVModule.forRoot(openCVConfig),
-    NgxUiLoaderModule
+    NgxUiLoaderModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   entryComponents: [FileLoadDialogComponent],
   providers: [
