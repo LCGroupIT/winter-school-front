@@ -237,7 +237,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
             rootThis.currentRectCoords.y = heightIndent;
             rootThis.currentRectCoords.width = pasportWidth;
             rootThis.currentRectCoords.height = pasportHeight;
-            ctx.strokeRect(widthIndent + pasportWidth * 0.05, pasportMiddle + pasportHeight * 0.129,
+            ctx.strokeRect(widthIndent + pasportWidth * 0.05, pasportMiddle + pasportWidth * 0.129,
               pasportPhotoWidth, pasportPhotoHeight);
            /* const pasportWidth = ctx.canvas.width / 2;
             const pasportHeight = pasportWidth * 1.347;
