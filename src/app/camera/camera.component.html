@@ -16,7 +16,7 @@
 
   </div>
   <div id="app">
-    <div><video #video id="video" autoplay [hidden]=true></video></div>
+  <div><video playsinline muted autoplay #video id="video" style="display:none" [hidden]=true></video></div>
     <ul>
       <li *ngFor="let c of captures">
         <img src="{{ c }}" height="300" />
