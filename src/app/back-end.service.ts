@@ -24,7 +24,7 @@ export class BackEndService {
     };
 
     this.httpClient.post(uploadUrl, passport).subscribe(
-      () => this.messageService.show("Данные отправленны"),
+      () => this.messageService.show("Данные отправлены"),
       err => {
         this.messageService.show("Невозможно отправить данные");
         console.log("Error unable to send", err);
