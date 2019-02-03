@@ -1,0 +1,24 @@
+.file-load-dialog__button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+
+  & :last-child {
+    margin-left: 10px;
+  }
+}
+
+.example-image__title {
+  font-size: 20px;
+}
+
+.example-image__image-wrapper {
+  margin: 10px 0;
+  height: 200px;
+}
+
+.example-image__image {
+  object-fit: contain;
+  height: 100%;
+  width: 100%;
+}

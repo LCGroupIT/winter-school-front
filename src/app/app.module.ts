@@ -34,6 +34,8 @@ import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 import { APP_BASE_HREF } from "@angular/common";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { ExampleImageComponent } from "./example-image/example-image.component";
+import { ExampleImageButtonComponent } from "./example-image-button/example-image-button.component";
 
 const openCVConfig = {
   scriptUrl: "assets/opencv/asm/3.4/opencv.js",
@@ -50,7 +52,9 @@ const appRoutes: Routes = [{ path: "camera", component: CameraComponent }];
     FileLoadButtonComponent,
     FileLoadDialogComponent,
     FrontRecognitionComponent,
-    SelectRecognitionComponent
+    SelectRecognitionComponent,
+    ExampleImageComponent,
+    ExampleImageButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -75,7 +79,7 @@ const appRoutes: Routes = [{ path: "camera", component: CameraComponent }];
     }),
     NgxUiLoaderModule.forRoot({ threshold: 100 })
   ],
-  entryComponents: [FileLoadDialogComponent],
+  entryComponents: [FileLoadDialogComponent, ExampleImageComponent],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: "ru-RU" },
     {
