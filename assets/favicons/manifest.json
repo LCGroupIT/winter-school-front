@@ -3,7 +3,7 @@
     "short_name": "Passport recognition",
     "display": "standalone",
     "orientation": "portrait",
-    "start_url": "/winter-school-front",
+    "start_url": "/winter-school-front/",
     "theme_color": "#ff4081",
     "background_color": "#ffffff",
     "icons": [
