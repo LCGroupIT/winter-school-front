@@ -13,7 +13,12 @@
     <button mat-raised-button color="primary" (click)="closeDialog()">
       Отменить
     </button>
-    <button mat-raised-button color="accent" [disabled]="sendButtonStatus" (click)="sendPhoto()">
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="sendButtonStatus"
+      (click)="sendPhoto()"
+    >
       Распознать
     </button>
   </div>

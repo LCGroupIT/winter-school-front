@@ -20,7 +20,7 @@ export class ExampleImageComponent implements OnInit, AfterViewInit {
   ngOnInit() {}
 
   ngAfterViewInit() {
-    this.getPhoto()
+    this.getPhoto();
   }
 
   async getPhoto() {

@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
 import { Passport } from "../passport";
 import { PassportService } from "../passport.service";
 import { BackEndService } from "../back-end.service";
@@ -10,12 +9,12 @@ import { BackEndService } from "../back-end.service";
   styleUrls: ["./form.component.scss"]
 })
 export class FormComponent implements OnInit {
+  passport: Passport = new Passport();
+
   constructor(
     private passportService: PassportService,
     private backEndService: BackEndService
   ) {}
-
-  passport: Passport = new Passport();
 
   ngOnInit() {
     this.passportService.getPassport().subscribe(passport => {

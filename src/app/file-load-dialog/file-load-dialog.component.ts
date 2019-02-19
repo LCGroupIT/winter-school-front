@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { MatDialogRef } from "@angular/material";
 import { PassportFileService } from "../passport-file.service";
-import { NgxUiLoaderService } from 'ngx-ui-loader'; 
+import { NgxUiLoaderService } from "ngx-ui-loader";
 
 @Component({
   selector: "app-file-load-dialog",
@@ -39,7 +39,6 @@ export class FileLoadDialogComponent implements OnInit {
     this.sendButtonStatus = false;
     this.photo = e.file;
   }
-
 
   sendPhoto() {
     this.ngxService.start();

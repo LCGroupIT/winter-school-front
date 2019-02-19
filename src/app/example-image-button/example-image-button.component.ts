@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material";
-import { ExampleImageComponent} from "../example-image/example-image.component";
+import { ExampleImageComponent } from "../example-image/example-image.component";
 
 @Component({
-  selector: 'app-example-image-button',
-  templateUrl: './example-image-button.component.html',
-  styleUrls: ['./example-image-button.component.scss']
+  selector: "app-example-image-button",
+  templateUrl: "./example-image-button.component.html",
+  styleUrls: ["./example-image-button.component.scss"]
 })
 export class ExampleImageButtonComponent implements OnInit {
-
   constructor(public dialog: MatDialog) {}
 
   openDialog(): void {
@@ -19,7 +18,5 @@ export class ExampleImageButtonComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

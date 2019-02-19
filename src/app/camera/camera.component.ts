@@ -168,8 +168,6 @@ export class CameraComponent implements OnInit, AfterViewInit {
 
     this.video.nativeElement.addEventListener("play", Draw.bind(this), 0);
 
-
-
     function Draw(event) {
       const $this = this.video.nativeElement;
       const rootThis = this;
@@ -256,7 +254,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
             pasportPhotoHeight
           );
           ctx.canvas.toBlob(blob => {
-            console.log('Video: ' + blob.size);
+            console.log("Video: " + blob.size);
           });
           setTimeout(loop, 1000 / 30); // drawing at 30fps
         }
@@ -270,7 +268,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
     ctx.strokeStyle = "black";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     this.photoCanvas.nativeElement.toBlob((blob: Blob) => {
-      console.log('Pre final:' + blob.size);
+      console.log("Pre final:" + blob.size);
     }, "image/png");
     this.photoCanvas.nativeElement.width = this.currentRectCoords.width;
     this.photoCanvas.nativeElement.height = this.currentRectCoords.height;
@@ -290,7 +288,7 @@ export class CameraComponent implements OnInit, AfterViewInit {
       );
     this.ngxService.start();
     this.photoCanvas.nativeElement.toBlob((blob: Blob) => {
-      console.log('Final:' + blob.size);
+      console.log("Final:" + blob.size);
       this.passportFileService.setPassportFile(blob);
       this.stop();
     }, "image/png");
@@ -330,7 +328,6 @@ export class CameraComponent implements OnInit, AfterViewInit {
     this.stream.getTracks().forEach(t => {
       t.stop();
     });
-  this.router.navigate([""]);
-
+    this.router.navigate([""]);
   }
 }

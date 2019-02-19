@@ -46,7 +46,7 @@ export class FrontRecognitionComponent implements OnInit, Recognize {
     this.passportImage = passportImage;
     await this.loadImage(passportImage);
     const passport = this.getPassportData();
-    
+
     return passport;
   }
 
@@ -212,7 +212,7 @@ export class FrontRecognitionComponent implements OnInit, Recognize {
     src.delete();
   }
 
-  private getPassportData() : Passport {
+  private getPassportData(): Passport {
     const docData = this.aboutDocData;
     const literalData = this.literalData;
     const numberData = this.numberData;

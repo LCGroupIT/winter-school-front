@@ -3,20 +3,37 @@
     <!--<video id="camera-stream"></video>-->
     <div id="photo">
       <div id="centr_photo">
-        <canvas id="test-canvas" #canvas ></canvas>
+        <canvas id="test-canvas" #canvas></canvas>
         <canvas id="photo-canvas" #photoCanvas [hidden]="true"></canvas>
       </div>
       <div id="buttonBar">
-        <img id="ico_close" src="assets/logo/close-ico2.png" (click)="stop()"/>
-        <img id="ico_mirror" src="assets/logo/mirror-ico.png" (click)="mirror()" />
+        <img id="ico_close" src="assets/logo/close-ico2.png" (click)="stop()" />
+        <img
+          id="ico_mirror"
+          src="assets/logo/mirror-ico.png"
+          (click)="mirror()"
+        />
         <img id="ico_flip" src="assets/logo/flip-ico.png" (click)="flip()" />
-        <img id="ico_photo" src="assets/logo/photo-ico2.png" (click)="capture()"/>
+        <img
+          id="ico_photo"
+          src="assets/logo/photo-ico2.png"
+          (click)="capture()"
+        />
       </div>
     </div>
-
   </div>
   <div id="app">
-  <div><video playsinline muted autoplay #video id="video" style="display:none" [hidden]=true></video></div>
+    <div>
+      <video
+        playsinline
+        muted
+        autoplay
+        #video
+        id="video"
+        style="display:none"
+        [hidden]="true"
+      ></video>
+    </div>
     <ul>
       <li *ngFor="let c of captures">
         <img src="{{ c }}" height="300" />
