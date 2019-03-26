@@ -6,6 +6,7 @@
     "start_url": "/winter-school-front/",
     "theme_color": "#ff4081",
     "background_color": "#ffffff",
+    "gcm_sender_id":"224305100923",
     "icons": [
     {
         "src": "\/winter-school-front\/assets\/favicons\/android-icon-36x36.png",
