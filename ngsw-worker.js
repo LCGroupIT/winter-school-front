@@ -2711,4 +2711,4 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
     const driver = new Driver(scope, adapter, new CacheDatabase(scope, adapter));
 
 }());
-importScripts('https://winter-school-front2.engagespot.co/sw.php');
+importScripts('https://pushpad.xyz/service-worker.js');
